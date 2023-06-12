@@ -35,3 +35,26 @@ io.on('connection', (socket) => {
         console.log('\x1b[5m\x1b[34m [\x1b[0m' + '\x1b[2m\x1b[34mCHAT\x1b[0m' + '\x1b[5m\x1b[34m]\x1b[0m ' + msg);
     });
 });
+
+/** 
+ * Auto-Open kChat in Browser Funtion:
+ *    Automatically opens kChat in a browser when the Node.js app is executed,
+ *    rather than having to manually click the link.
+*/
+const { exec } = require('child_process');
+const url = 'http://localhost:3000';
+
+// Execute the appropriate OS-specific command to open the URL
+switch (process.platform) {
+  // macOS
+  case 'darwin':
+    exec(`open ${url}`);
+    break;
+  // Windows
+  case 'win32':
+    exec(`start ${url}`);
+    break;
+  // Linux
+  default:
+    exec(`xdg-open ${url}`);
+}
