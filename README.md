@@ -1,5 +1,3 @@
-<base target="_blank">
-
 # kChat
 A simple Node.js web chat application, that's deployed using [Railway](https://railway.app).
 
