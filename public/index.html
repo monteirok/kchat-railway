@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" type="image/png" href="./favicon.png">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>kChat</title>
 </head>
@@ -24,13 +25,13 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    // Client-side JavaScript
+    // client-side js
     var socket = io();
     var messages = document.getElementById('messages');
     var form = document.getElementById('messages-in');
     var input = document.getElementById('msg-input');
     var usernameColorInput = document.getElementById('username-color-input');
-    var username = ""; // Initialize the username variable
+    var username = "";
 
     // Function to set the username
     function setUsername() {
@@ -38,6 +39,13 @@
         if (name) {
             username = name;
         }
+        // emit a 'newUser' event to the server that contains the username and notifies that a new user has joined
+        socket.emit('newUser', username);
+        
+        // emit 'disconnect' event when the user leaves the chat
+        window.addEventListener('beforeunload', function(e) {
+            socket.emit('disconnect', username);
+        });
     }
 
     // Function to generate a random color
@@ -47,6 +55,12 @@
         for (var i = 0; i < 6; i++) {
             color += letters[Math.floor(Math.random() * 16)];
         }
+        
+        // red (#ff0000) is reserved for the server chat bot
+        if (color == "#ff0000") {
+            color = '#ffcc00';
+        }
+
         return color;
     }
 
